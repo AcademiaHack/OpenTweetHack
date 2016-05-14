@@ -11,26 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121160425) do
+ActiveRecord::Schema.define(version: 20160511140556) do
 
   create_table "follows", force: :cascade do |t|
+    t.integer  "target_user_id", limit: 4
+    t.integer  "source_user_id", limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.integer  "user_target_id", limit: 4
-    t.integer  "user_source_id", limit: 4
   end
 
-  add_index "follows", ["user_source_id"], name: "user_source_id_fk", using: :btree
-  add_index "follows", ["user_target_id"], name: "user_target_id_fk", using: :btree
+  add_index "follows", ["source_user_id"], name: "index_follows_on_source_user_id", using: :btree
+  add_index "follows", ["target_user_id"], name: "index_follows_on_target_user_id", using: :btree
 
-  create_table "twits", force: :cascade do |t|
-    t.string   "twit",       limit: 255
+  create_table "tweets", force: :cascade do |t|
+    t.string   "content",    limit: 255
     t.integer  "user_id",    limit: 4
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
 
-  add_index "twits", ["user_id"], name: "index_twits_on_user_id", using: :btree
+  add_index "tweets", ["user_id"], name: "index_tweets_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -39,9 +39,10 @@ ActiveRecord::Schema.define(version: 20160121160425) do
     t.string   "email",      limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "age",        limit: 4
   end
 
-  add_foreign_key "follows", "users", column: "user_source_id", name: "user_source_id_fk"
-  add_foreign_key "follows", "users", column: "user_target_id", name: "user_target_id_fk"
-  add_foreign_key "twits", "users"
+  add_foreign_key "follows", "users", column: "source_user_id"
+  add_foreign_key "follows", "users", column: "target_user_id"
+  add_foreign_key "tweets", "users"
 end

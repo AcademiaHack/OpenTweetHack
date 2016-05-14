@@ -14,18 +14,18 @@ class UsersController < ApplicationController
   def create
     u = User.new(permit_params)
     if u.save
-      render json: {message: "good"}
+      render json: {message: "Created"}
     else
-      render json: {message: "no good", errors: u.errors.full_messages}
+      render json: {message: "Not Created", errors: u.errors.full_messages}
     end
   end
 
   def update
        u = User.find(params[:id])
     if u.update(permit_params)
-      render json: {message: "Actualizado"}
+      render json: {message: "Updated"}
     else
-      render json: {message: "no actualizado"}
+      render json: {message: "Not Updated"}
     end     
   end
 
@@ -33,9 +33,9 @@ class UsersController < ApplicationController
     if User.ids.include? params[:id].to_i
       u = User.find(params[:id])
       u.destroy
-      render json: {message: "borrado"}
+      render json: {message: "Deleted"}
     else
-      render json: {message: "no existe"}
+      render json: {message: "Does Not Exist"}
     end
   end
 
